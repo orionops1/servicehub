@@ -10,6 +10,16 @@
 
 ---
 
+> ## 🚨 DEPLOYMENT FIX NEEDED
+> 
+> **Vercel build failing?** You need to add environment variables manually.
+> 
+> **📖 READ THIS FIRST:** [`QUICK_FIX.md`](./QUICK_FIX.md) - 3 steps, 12 minutes to fix
+> 
+> Or detailed guide: [`FIX_VERCEL_DEPLOYMENT.md`](./FIX_VERCEL_DEPLOYMENT.md)
+
+---
+
 ## 📋 Overview
 
 Service Hub Sri Lanka is a comprehensive SaaS marketplace platform connecting local service providers with customers across Sri Lanka. Built with modern technologies and designed for scale, security, and performance.
