@@ -33,7 +33,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">About Service Hub</h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Sri Lanka's trusted marketplace connecting customers with verified local service providers
+            Sri Lanka&apos;s trusted marketplace connecting customers with verified local service providers
           </p>
         </div>
       </section>
@@ -111,7 +111,7 @@ export default function AboutPage() {
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-bold mb-4">Join Service Hub Today</h2>
           <p className="text-xl mb-8 opacity-90">
-            Whether you're looking for services or offering them, we're here to help
+            Whether you&apos;re looking for services or offering them, we&apos;re here to help
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/search">

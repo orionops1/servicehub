@@ -90,7 +90,7 @@ export default async function ServiceRequestsPage() {
                           <span>📍 {request.city.name}, {request.district.name}</span>
                         )}
                         {request.budgetMin && request.budgetMax && (
-                          <span>💰 LKR {request.budgetMin} - {request.budgetMax}</span>
+                          <span>💰 LKR {request.budgetMin.toString()} - {request.budgetMax.toString()}</span>
                         )}
                         <span className="text-muted-foreground">
                           {new Date(request.createdAt).toLocaleDateString()}

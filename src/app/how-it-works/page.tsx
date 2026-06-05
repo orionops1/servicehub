@@ -213,7 +213,7 @@ export default function HowItWorksPage() {
                 Post a Service Request
               </h2>
               <p className="text-xl mb-8 opacity-90">
-                Can't find what you're looking for? Post your requirement and let providers come to you!
+                Can&apos;t find what you&apos;re looking for? Post your requirement and let providers come to you!
               </p>
               <div className="space-y-4 text-left max-w-2xl mx-auto mb-8">
                 <div className="flex items-start gap-3">
@@ -280,11 +280,11 @@ export default function HowItWorksPage() {
 
             <details className="bg-white rounded-lg shadow p-6 group">
               <summary className="font-semibold cursor-pointer flex justify-between items-center">
-                What if I'm not satisfied with a service?
+                What if I&apos;m not satisfied with a service?
                 <span className="text-gray-400 group-open:rotate-180 transition-transform">▼</span>
               </summary>
               <p className="mt-4 text-gray-600">
-                Service Hub connects you with providers but doesn't provide services directly. If you have issues, communicate with the provider first. You can leave an honest review to help other customers.
+                Service Hub connects you with providers but doesn&apos;t provide services directly. If you have issues, communicate with the provider first. You can leave an honest review to help other customers.
               </p>
             </details>
 

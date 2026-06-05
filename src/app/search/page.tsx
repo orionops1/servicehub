@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 }
 
 interface SearchPageProps {
-  searchParams: {
+  searchParams: Promise<{
     q?: string
     category?: string
     district?: string
@@ -18,48 +18,49 @@ interface SearchPageProps {
     tier?: string
     verified?: string
     page?: string
-  }
+  }>
 }
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
-  const page = parseInt(searchParams.page || '1')
+  const resolvedSearchParams = await searchParams
+  const page = parseInt(resolvedSearchParams.page || '1')
   const limit = 20
   const skip = (page - 1) * limit
 
-  const where: any = {
+  const where: Record<string, unknown> = {
     status: 'ACTIVE',
   }
 
-  if (searchParams.category) {
+  if (resolvedSearchParams.category) {
     where.services = {
       some: {
         category: {
-          slug: searchParams.category
+          slug: resolvedSearchParams.category
         }
       }
     }
   }
 
-  if (searchParams.district) {
-    where.districtId = searchParams.district
+  if (resolvedSearchParams.district) {
+    where.districtId = resolvedSearchParams.district
   }
 
-  if (searchParams.city) {
-    where.cityId = searchParams.city
+  if (resolvedSearchParams.city) {
+    where.cityId = resolvedSearchParams.city
   }
 
-  if (searchParams.tier) {
-    where.tier = searchParams.tier
+  if (resolvedSearchParams.tier) {
+    where.tier = resolvedSearchParams.tier
   }
 
-  if (searchParams.verified === 'true') {
+  if (resolvedSearchParams.verified === 'true') {
     where.verified = true
   }
 
-  if (searchParams.q) {
+  if (resolvedSearchParams.q) {
     where.OR = [
-      { businessName: { contains: searchParams.q, mode: 'insensitive' } },
-      { description: { contains: searchParams.q, mode: 'insensitive' } },
+      { businessName: { contains: resolvedSearchParams.q, mode: 'insensitive' } },
+      { description: { contains: resolvedSearchParams.q, mode: 'insensitive' } },
     ]
   }
 
@@ -147,7 +148,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       <Link
                         href={{
                           pathname: '/search',
-                          query: { ...searchParams, page: page - 1 }
+                          query: { ...resolvedSearchParams, page: page - 1 }
                         }}
                         className="px-4 py-2 border rounded-lg hover:bg-gray-50"
                       >
@@ -162,7 +163,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                           key={pageNum}
                           href={{
                             pathname: '/search',
-                            query: { ...searchParams, page: pageNum }
+                            query: { ...resolvedSearchParams, page: pageNum }
                           }}
                           className={`px-4 py-2 border rounded-lg ${
                             pageNum === page
@@ -179,7 +180,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
                       <Link
                         href={{
                           pathname: '/search',
-                          query: { ...searchParams, page: page + 1 }
+                          query: { ...resolvedSearchParams, page: page + 1 }
                         }}
                         className="px-4 py-2 border rounded-lg hover:bg-gray-50"
                       >

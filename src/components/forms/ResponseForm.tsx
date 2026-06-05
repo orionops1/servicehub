@@ -84,7 +84,7 @@ export default function ResponseForm({ requestId }: ResponseFormProps) {
           required
         />
         <p className="text-xs text-gray-500 mt-1">
-          Include your relevant experience and why you're the best fit for this job.
+          Include your relevant experience and why you&apos;re the best fit for this job.
         </p>
       </div>
 

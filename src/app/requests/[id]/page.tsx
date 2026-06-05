@@ -6,9 +6,9 @@ import { authOptions } from '@/lib/auth'
 import ResponseForm from '@/components/forms/ResponseForm'
 
 interface PageProps {
-  params: {
+  params: Promise<{
     id: string
-  }
+  }>
 }
 
 async function getServiceRequest(id: string) {
@@ -58,7 +58,8 @@ async function getServiceRequest(id: string) {
 
 export default async function ServiceRequestDetailPage({ params }: PageProps) {
   const session = await getServerSession(authOptions)
-  const request = await getServiceRequest(params.id)
+  const { id } = await params
+  const request = await getServiceRequest(id)
 
   if (!request) {
     notFound()

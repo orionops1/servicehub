@@ -4,16 +4,18 @@ import { prisma } from '@/lib/prisma'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface ProviderProfilePageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: ProviderProfilePageProps): Promise<Metadata> {
+  const { slug } = await params
   const provider = await prisma.provider.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     include: { district: true, city: true }
   })
 
@@ -28,8 +30,9 @@ export async function generateMetadata({ params }: ProviderProfilePageProps): Pr
 }
 
 export default async function ProviderProfilePage({ params }: ProviderProfilePageProps) {
+  const { slug } = await params
   const provider = await prisma.provider.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     include: {
       user: {
         select: { name: true }
@@ -255,11 +258,12 @@ export default async function ProviderProfilePage({ params }: ProviderProfilePag
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {provider.gallery.map((image) => (
-                      <div key={image.id} className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                        <img
+                      <div key={image.id} className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                        <Image
                           src={image.imageUrl}
                           alt={image.caption || 'Gallery image'}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                       </div>
                     ))}

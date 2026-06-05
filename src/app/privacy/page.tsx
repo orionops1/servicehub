@@ -14,7 +14,7 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">1. Introduction</h2>
           <p>
-            Service Hub Sri Lanka ("we," "our," or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect,
+            Service Hub Sri Lanka (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) is committed to protecting your privacy. This Privacy Policy explains how we collect,
             use, disclose, and safeguard your information when you use our platform.
           </p>
         </section>
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4">9. Children's Privacy</h2>
+          <h2 className="text-2xl font-semibold mb-4">9. Children&apos;s Privacy</h2>
           <p>
             Our Platform is not intended for users under 18 years of age. We do not knowingly collect information from children.
             If we learn we have collected information from a child, we will delete it promptly.
@@ -163,7 +163,7 @@ export default function PrivacyPage() {
           <h2 className="text-2xl font-semibold mb-4">12. Changes to This Privacy Policy</h2>
           <p>
             We may update this Privacy Policy periodically. We will notify you of significant changes by posting the new policy on this page
-            and updating the "Last Updated" date. Continued use constitutes acceptance of changes.
+            and updating the &quot;Last Updated&quot; date. Continued use constitutes acceptance of changes.
           </p>
         </section>
 
