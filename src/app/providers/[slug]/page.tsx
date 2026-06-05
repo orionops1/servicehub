@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import Link from 'next/link'
+import Image from 'next/image'
 
 interface ProviderProfilePageProps {
   params: {
@@ -255,11 +256,12 @@ export default async function ProviderProfilePage({ params }: ProviderProfilePag
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {provider.gallery.map((image) => (
-                      <div key={image.id} className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                        <img
+                      <div key={image.id} className="aspect-square bg-gray-100 rounded-lg overflow-hidden relative">
+                        <Image
                           src={image.imageUrl}
                           alt={image.caption || 'Gallery image'}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
                         />
                       </div>
                     ))}

@@ -80,7 +80,7 @@ export function LoginForm() {
       
       <div className="text-center space-y-2">
         <p className="text-sm text-muted-foreground">
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link href="/register" className="text-primary hover:underline font-medium">
             Register
           </Link>

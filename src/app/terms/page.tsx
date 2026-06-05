@@ -14,7 +14,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">1. Acceptance of Terms</h2>
           <p>
-            By accessing and using Service Hub Sri Lanka ("the Platform"), you accept and agree to be bound by the terms and provision of this agreement.
+            By accessing and using Service Hub Sri Lanka (&quot;the Platform&quot;), you accept and agree to be bound by the terms and provision of this agreement.
             If you do not agree to these Terms of Service, please do not use the Platform.
           </p>
         </section>
@@ -105,7 +105,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-4">10. Disclaimer of Warranties</h2>
           <p>
-            The Platform is provided "as is" without warranties of any kind. We do not guarantee the accuracy, reliability, or quality of services
+            The Platform is provided &quot;as is&quot; without warranties of any kind. We do not guarantee the accuracy, reliability, or quality of services
             provided by third-party providers. Users engage with providers at their own risk.
           </p>
         </section>

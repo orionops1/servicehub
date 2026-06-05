@@ -318,7 +318,7 @@ export default function PricingPage() {
             <div className="bg-white rounded-lg p-6 shadow-sm">
               <h3 className="font-semibold mb-2">Do you offer refunds?</h3>
               <p className="text-gray-600">
-                We offer a 7-day money-back guarantee on all paid plans if you're not satisfied.
+                We offer a 7-day money-back guarantee on all paid plans if you&apos;re not satisfied.
               </p>
             </div>
           </div>

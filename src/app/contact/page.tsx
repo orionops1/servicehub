@@ -34,7 +34,7 @@ export default function ContactPage() {
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-6">Contact Us</h1>
           <p className="text-xl text-gray-600">
-            We'd love to hear from you
+            We&apos;d love to hear from you
           </p>
         </div>
       </section>
@@ -82,7 +82,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-lg font-semibold mb-2">How do I register as a service provider?</h3>
                 <p className="text-gray-600">
-                  Click on "Become a Provider" on the homepage or register page. Fill in your business details and you'll be able to create your profile immediately.
+                  Click on &quot;Become a Provider&quot; on the homepage or register page. Fill in your business details and you&apos;ll be able to create your profile immediately.
                 </p>
               </div>
 
@@ -96,7 +96,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-lg font-semibold mb-2">How do I contact a service provider?</h3>
                 <p className="text-gray-600">
-                  Visit any provider's profile and click on the WhatsApp or Phone button to contact them instantly.
+                  Visit any provider&apos;s profile and click on the WhatsApp or Phone button to contact them instantly.
                 </p>
               </div>
 
@@ -110,7 +110,7 @@ export default function ContactPage() {
               <div>
                 <h3 className="text-lg font-semibold mb-2">How do reviews work?</h3>
                 <p className="text-gray-600">
-                  Customers can leave reviews for service providers they've worked with. Reviews are moderated to ensure quality and authenticity.
+                  Customers can leave reviews for service providers they&apos;ve worked with. Reviews are moderated to ensure quality and authenticity.
                 </p>
               </div>
             </div>

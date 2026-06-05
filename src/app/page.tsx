@@ -153,7 +153,7 @@ export default function HomePage() {
             <div>
               <h3 className="font-bold text-lg mb-4">SERVICE HUB</h3>
               <p className="text-gray-400 text-sm">
-                Sri Lanka's trusted marketplace for local services
+                Sri Lanka&apos;s trusted marketplace for local services
               </p>
             </div>
             <div>

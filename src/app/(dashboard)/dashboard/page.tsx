@@ -2,6 +2,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { redirect } from 'next/navigation'
 import { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -38,12 +39,12 @@ export default async function DashboardPage() {
               <p className="text-sm text-muted-foreground mb-4">
                 Set up your business profile to start receiving customer requests
               </p>
-              <a 
+              <Link 
                 href="/provider/register" 
                 className="inline-block bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
               >
                 Get Started
-              </a>
+              </Link>
             </div>
 
             <div className="bg-white border rounded-lg p-6">
@@ -73,12 +74,12 @@ export default async function DashboardPage() {
               <p className="text-sm text-muted-foreground mb-4">
                 Browse and connect with service providers
               </p>
-              <a 
+              <Link 
                 href="/search" 
                 className="inline-block bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
               >
                 Search Now
-              </a>
+              </Link>
             </div>
 
             <div className="bg-white border rounded-lg p-6">
@@ -86,12 +87,12 @@ export default async function DashboardPage() {
               <p className="text-sm text-muted-foreground mb-4">
                 Let providers come to you with quotes
               </p>
-              <a 
+              <Link 
                 href="/requests/new" 
                 className="inline-block bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90"
               >
                 Create Request
-              </a>
+              </Link>
             </div>
           </div>
         )}
