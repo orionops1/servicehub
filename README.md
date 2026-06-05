@@ -27,7 +27,7 @@ SERVICE HUB SRI LANKA is a production-ready SaaS platform designed to be the #1 
 
 ```
 Next.js 15 (App Router)
-├── Frontend: React 19 + TypeScript + Tailwind CSS
+├── Frontend: React 18 + TypeScript + Tailwind CSS
 ├── Backend: Next.js API Routes + Server Actions
 ├── Database: PostgreSQL (Neon) + Prisma ORM
 ├── Auth: NextAuth/Auth.js
