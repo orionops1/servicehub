@@ -187,18 +187,21 @@ main()
   
   // Second pass: Create child categories
   for (const catData of categoriesData.filter(c => c.parent)) {
-    const parent = createdCategories[catData.parent]
-    if (parent) {
-      const cat = await prisma.category.create({
-        data: {
-          name: catData.name,
-          slug: catData.slug,
-          description: catData.description,
-          parentId: parent.id,
-          featured: catData.featured || false,
-        }
-      })
-      console.log(`Created subcategory: ${cat.name}`)
+    const parentName = catData.parent
+    if (parentName) {
+      const parent = createdCategories[parentName]
+      if (parent) {
+        const cat = await prisma.category.create({
+          data: {
+            name: catData.name,
+            slug: catData.slug,
+            description: catData.description,
+            parentId: parent.id,
+            featured: catData.featured || false,
+          }
+        })
+        console.log(`Created subcategory: ${cat.name}`)
+      }
     }
   }
 
