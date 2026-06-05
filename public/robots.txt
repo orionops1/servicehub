@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://servicehub.lk
+
+# Sitemaps
+Sitemap: https://servicehub.lk/sitemap.xml

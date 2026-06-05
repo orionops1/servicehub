@@ -1,0 +1,497 @@
+// This is your Prisma schema file
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// USER MANAGEMENT
+// ============================================
+
+enum UserRole {
+  GUEST
+  CUSTOMER
+  PROVIDER
+  ADMIN
+}
+
+enum ProviderTier {
+  FREE
+  PROFESSIONAL
+  ELITE
+}
+
+enum ProviderStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+  INACTIVE
+}
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  name          String?
+  image         String?
+  phone         String?
+  role          UserRole  @default(CUSTOMER)
+  
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  provider      Provider?
+  reviews       Review[]
+  favorites     Favorite[]
+  serviceRequests ServiceRequest[]
+  
+  @@map("users")
+}
+
+model Provider {
+  id              String          @id @default(cuid())
+  userId          String          @unique
+  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Business Information
+  businessName    String
+  slug            String          @unique
+  description     String?         @db.Text
+  logo            String?
+  coverImage      String?
+  
+  // Contact Information
+  phone           String
+  whatsapp        String?
+  email           String?
+  website         String?
+  
+  // Location
+  provinceId      String?
+  province        Province?       @relation(fields: [provinceId], references: [id])
+  districtId      String?
+  district        District?       @relation(fields: [districtId], references: [id])
+  cityId          String?
+  city            City?           @relation(fields: [cityId], references: [id])
+  address         String?
+  latitude        Float?
+  longitude       Float?
+  
+  // Business Details
+  establishedYear Int?
+  licenseNumber   String?
+  verified        Boolean         @default(false)
+  featured        Boolean         @default(false)
+  
+  // Subscription
+  tier            ProviderTier    @default(FREE)
+  status          ProviderStatus  @default(PENDING)
+  subscriptionStartDate DateTime?
+  subscriptionEndDate   DateTime?
+  
+  // Statistics
+  viewCount       Int             @default(0)
+  clickCount      Int             @default(0)
+  whatsappClickCount Int          @default(0)
+  callClickCount  Int             @default(0)
+  averageRating   Float           @default(0)
+  totalReviews    Int             @default(0)
+  
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  
+  // Relations
+  services        Service[]
+  gallery         ProviderGallery[]
+  reviews         Review[]
+  analytics       ProviderAnalytics[]
+  subscriptions   Subscription[]
+  serviceResponses ServiceResponse[]
+  
+  @@index([slug])
+  @@index([tier, status, featured])
+  @@index([districtId, cityId])
+  @@map("providers")
+}
+
+model ProviderGallery {
+  id          String   @id @default(cuid())
+  providerId  String
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  imageUrl    String
+  caption     String?
+  order       Int      @default(0)
+  
+  createdAt   DateTime @default(now())
+  
+  @@index([providerId])
+  @@map("provider_gallery")
+}
+
+// ============================================
+// SERVICE MANAGEMENT
+// ============================================
+
+model Category {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?     @db.Text
+  icon        String?
+  image       String?
+  parentId    String?
+  parent      Category?   @relation("CategoryHierarchy", fields: [parentId], references: [id])
+  children    Category[]  @relation("CategoryHierarchy")
+  
+  order       Int         @default(0)
+  active      Boolean     @default(true)
+  featured    Boolean     @default(false)
+  
+  // SEO
+  metaTitle       String?
+  metaDescription String?
+  
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  // Relations
+  services    Service[]
+  serviceRequests ServiceRequest[]
+  
+  @@index([slug])
+  @@index([parentId])
+  @@map("categories")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  providerId  String
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  categoryId  String
+  category    Category @relation(fields: [categoryId], references: [id])
+  
+  title       String
+  description String?  @db.Text
+  
+  // Pricing (optional)
+  priceFrom   Decimal? @db.Decimal(10, 2)
+  priceTo     Decimal? @db.Decimal(10, 2)
+  priceUnit   String?  // e.g., "per hour", "per visit", "per project"
+  
+  // Service Area
+  serviceProvinces String[] // Array of province IDs
+  serviceDistricts String[] // Array of district IDs
+  serviceCities    String[] // Array of city IDs
+  
+  active      Boolean  @default(true)
+  featured    Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([providerId])
+  @@index([categoryId])
+  @@index([active, featured])
+  @@map("services")
+}
+
+// ============================================
+// SERVICE REQUEST MARKETPLACE
+// ============================================
+
+enum RequestStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum RequestUrgency {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model ServiceRequest {
+  id          String         @id @default(cuid())
+  customerId  String
+  customer    User           @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  
+  categoryId  String
+  category    Category       @relation(fields: [categoryId], references: [id])
+  
+  title       String
+  description String         @db.Text
+  
+  // Location
+  provinceId  String?
+  province    Province?      @relation(fields: [provinceId], references: [id])
+  districtId  String?
+  district    District?      @relation(fields: [districtId], references: [id])
+  cityId      String?
+  city        City?          @relation(fields: [cityId], references: [id])
+  
+  // Budget
+  budgetMin   Decimal?       @db.Decimal(10, 2)
+  budgetMax   Decimal?       @db.Decimal(10, 2)
+  
+  urgency     RequestUrgency @default(MEDIUM)
+  status      RequestStatus  @default(OPEN)
+  
+  // Contact
+  contactPhone    String?
+  contactWhatsapp String?
+  contactEmail    String?
+  
+  // Metadata
+  viewCount   Int            @default(0)
+  responseCount Int          @default(0)
+  
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+  expiresAt   DateTime?
+  
+  // Relations
+  responses   ServiceResponse[]
+  
+  @@index([categoryId])
+  @@index([status, urgency])
+  @@index([districtId, cityId])
+  @@index([createdAt])
+  @@map("service_requests")
+}
+
+model ServiceResponse {
+  id             String         @id @default(cuid())
+  requestId      String
+  request        ServiceRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  
+  providerId     String
+  provider       Provider       @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  message        String         @db.Text
+  quotedPrice    Decimal?       @db.Decimal(10, 2)
+  
+  createdAt      DateTime       @default(now())
+  
+  @@index([requestId])
+  @@index([providerId])
+  @@map("service_responses")
+}
+
+// ============================================
+// REVIEWS & RATINGS
+// ============================================
+
+model Review {
+  id          String   @id @default(cuid())
+  providerId  String
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  customerId  String
+  customer    User     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  
+  rating      Int      // 1-5
+  comment     String?  @db.Text
+  
+  approved    Boolean  @default(false)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([providerId, customerId])
+  @@index([providerId])
+  @@index([approved])
+  @@map("reviews")
+}
+
+model Favorite {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  providerId  String
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([userId, providerId])
+  @@index([userId])
+  @@map("favorites")
+}
+
+// ============================================
+// SUBSCRIPTIONS & PAYMENTS
+// ============================================
+
+enum SubscriptionStatus {
+  ACTIVE
+  CANCELLED
+  EXPIRED
+  PENDING
+}
+
+model Subscription {
+  id          String             @id @default(cuid())
+  providerId  String
+  provider    Provider           @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  tier        ProviderTier
+  status      SubscriptionStatus
+  
+  startDate   DateTime
+  endDate     DateTime
+  
+  amount      Decimal            @db.Decimal(10, 2)
+  currency    String             @default("LKR")
+  
+  // Payment details
+  paymentMethod   String?
+  transactionId   String?
+  
+  autoRenew   Boolean            @default(false)
+  
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  
+  @@index([providerId])
+  @@index([status])
+  @@map("subscriptions")
+}
+
+// ============================================
+// ANALYTICS
+// ============================================
+
+model ProviderAnalytics {
+  id          String   @id @default(cuid())
+  providerId  String
+  provider    Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  
+  date        DateTime @db.Date
+  
+  // Metrics
+  profileViews      Int @default(0)
+  phoneClicks       Int @default(0)
+  whatsappClicks    Int @default(0)
+  websiteClicks     Int @default(0)
+  emailClicks       Int @default(0)
+  galleryViews      Int @default(0)
+  
+  // Sources
+  sourceSearch      Int @default(0)
+  sourceDirect      Int @default(0)
+  sourceRequest     Int @default(0)
+  
+  createdAt   DateTime @default(now())
+  
+  @@unique([providerId, date])
+  @@index([providerId, date])
+  @@map("provider_analytics")
+}
+
+// ============================================
+// LOCATION DATA
+// ============================================
+
+model Province {
+  id          String     @id @default(cuid())
+  name        String     @unique
+  nameEn      String
+  nameSi      String?
+  nameTa      String?
+  code        String     @unique
+  
+  latitude    Float?
+  longitude   Float?
+  
+  createdAt   DateTime   @default(now())
+  
+  // Relations
+  districts   District[]
+  cities      City[]
+  providers   Provider[]
+  serviceRequests ServiceRequest[]
+  
+  @@map("provinces")
+}
+
+model District {
+  id          String     @id @default(cuid())
+  provinceId  String
+  province    Province   @relation(fields: [provinceId], references: [id])
+  
+  name        String
+  nameEn      String
+  nameSi      String?
+  nameTa      String?
+  code        String     @unique
+  
+  latitude    Float?
+  longitude   Float?
+  
+  createdAt   DateTime   @default(now())
+  
+  // Relations
+  cities      City[]
+  providers   Provider[]
+  serviceRequests ServiceRequest[]
+  
+  @@index([provinceId])
+  @@map("districts")
+}
+
+model City {
+  id          String     @id @default(cuid())
+  districtId  String
+  district    District   @relation(fields: [districtId], references: [id])
+  
+  provinceId  String
+  province    Province   @relation(fields: [provinceId], references: [id])
+  
+  name        String
+  nameEn      String
+  nameSi      String?
+  nameTa      String?
+  
+  latitude    Float?
+  longitude   Float?
+  
+  // City type
+  isMajor     Boolean    @default(false)
+  population  Int?
+  
+  createdAt   DateTime   @default(now())
+  
+  // Relations
+  providers   Provider[]
+  serviceRequests ServiceRequest[]
+  
+  @@index([districtId])
+  @@index([provinceId])
+  @@map("cities")
+}
+
+// ============================================
+// PLATFORM CONFIGURATION
+// ============================================
+
+model SiteSettings {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String   @db.Text
+  
+  updatedAt   DateTime @updatedAt
+  
+  @@map("site_settings")
+}
