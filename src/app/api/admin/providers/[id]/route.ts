@@ -5,7 +5,7 @@ import { prisma } from '@/lib/prisma'
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -14,17 +14,18 @@ export async function PUT(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const { id } = await params
     const body = await request.json()
     const { status, verified, featured, tier } = body
 
-    const updates: any = {}
+    const updates: Record<string, unknown> = {}
     if (status) updates.status = status
     if (typeof verified === 'boolean') updates.verified = verified
     if (typeof featured === 'boolean') updates.featured = featured
     if (tier) updates.tier = tier
 
     const provider = await prisma.provider.update({
-      where: { id: params.id },
+      where: { id },
       data: updates,
       include: {
         user: {
@@ -47,7 +48,7 @@ export async function PUT(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const session = await getServerSession(authOptions)
@@ -56,8 +57,10 @@ export async function DELETE(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const { id } = await params
+
     await prisma.provider.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json({ success: true })

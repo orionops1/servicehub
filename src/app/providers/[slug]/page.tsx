@@ -7,14 +7,15 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 interface ProviderProfilePageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export async function generateMetadata({ params }: ProviderProfilePageProps): Promise<Metadata> {
+  const { slug } = await params
   const provider = await prisma.provider.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     include: { district: true, city: true }
   })
 
@@ -29,8 +30,9 @@ export async function generateMetadata({ params }: ProviderProfilePageProps): Pr
 }
 
 export default async function ProviderProfilePage({ params }: ProviderProfilePageProps) {
+  const { slug } = await params
   const provider = await prisma.provider.findUnique({
-    where: { slug: params.slug },
+    where: { slug },
     include: {
       user: {
         select: { name: true }
