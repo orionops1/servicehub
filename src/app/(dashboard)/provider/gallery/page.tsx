@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
@@ -21,6 +22,7 @@ export default function ProviderGalleryPage() {
     if (session?.user) {
       fetchGallery()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, status])
 
   const fetchGallery = async () => {
@@ -103,10 +105,11 @@ export default function ProviderGalleryPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {gallery.map((image: any) => (
                 <div key={image.id} className="relative aspect-square rounded-lg overflow-hidden border">
-                  <img
+                  <Image
                     src={image.imageUrl}
                     alt={image.caption || 'Gallery image'}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
                   />
                   {image.caption && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black/50 text-white p-2 text-sm">

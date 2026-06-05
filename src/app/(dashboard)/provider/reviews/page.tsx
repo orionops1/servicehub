@@ -21,6 +21,7 @@ export default function ProviderReviewsPage() {
     if (session?.user) {
       fetchReviews()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, status])
 
   const fetchReviews = async () => {

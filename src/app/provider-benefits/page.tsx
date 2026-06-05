@@ -163,7 +163,7 @@ export default function ProviderBenefitsPage() {
           </p>
           <Link href="/provider/register">
             <Button size="lg" variant="secondary" className="text-lg px-8">
-              Get Started Now - It's Free
+              Get Started Now - It&apos;s Free
             </Button>
           </Link>
         </div>

@@ -24,6 +24,7 @@ export default function AdminCategoriesPage() {
     }
 
     fetchCategories()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, status])
 
   const fetchCategories = async () => {

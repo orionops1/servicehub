@@ -22,6 +22,7 @@ export default function ProviderRequestsPage() {
     if (session?.user) {
       fetchRequests()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session, status])
 
   const fetchRequests = async () => {
